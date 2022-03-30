@@ -24,8 +24,14 @@ const Total = (props) => {
 
 const App = () => {
   const course = 'Half Stack application development'
-  const part1 = {name: 'Fundamentals of React', exercise: 10}
-  const part2 = {name: 'Using props to pass data', exercise: 7}
+  const part1 = {
+    name: 'Fundamentals of React', 
+    exercise: 1
+  }
+  const part2 = {
+    name: 'Using props to pass data',
+    exercise: 7
+  }
   const part3 = {name: 'State of a component', exercise: 14}
 
   return (
