@@ -18,12 +18,19 @@ const Feedback = ({ good, neutral, bad }) => {
 }
 
 const Statistics = ({ good, neutral, bad }) => {
+  const total = good + neutral + bad
+  const average = good > 0 || bad > 0 ? (good - bad) / total : 0
+  const percentage = good > 0 ? good / total * 100 : 0
+
   return (
     <div>
       <h1>Statistics</h1>
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
+      <p>all {total}</p>
+      <p>average {average}</p>
+      <p>percentage {percentage}%</p>
     </div>
   )
 }
