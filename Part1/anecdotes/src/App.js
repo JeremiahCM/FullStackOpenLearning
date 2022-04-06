@@ -7,6 +7,25 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
+//Header component
+const Header = ({ title }) => {
+  return (
+    <div>
+      <h1>{title}</h1>
+    </div>
+  )
+}
+
+//Anecdote component
+const Anecdote = ({ anecdote, votes }) => {
+  return (
+    <div>
+      {anecdote}
+      <p>has {votes} votes</p>
+    </div>
+  )
+}
+
 //App component
 const App = () => {
   const anecdotes = [
@@ -21,6 +40,8 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Uint8Array(anecdotes.length))
+
+  const maxIndex = votes.indexOf(Math.max(...votes))
 
   const getRandomInt = (max) => {
     return Math.floor(Math.random() * max)
@@ -38,12 +59,14 @@ const App = () => {
 
   return (
     <div>
-      {anecdotes[selected]}
-      <p>has {votes[selected]} votes</p>
+      <Header title='Anecdote of the day'/>
+      <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]}/>
       <div>
         <Button handleClick={voteClick} text='vote'/>
         <Button handleClick={randomClick} text='next anecdote'/>
       </div>
+      <Header title='Anecodtes with most votes'/>
+      <Anecdote anecdote={anecdotes[maxIndex]} votes={votes[maxIndex]}/>
     </div>
   )
 }
