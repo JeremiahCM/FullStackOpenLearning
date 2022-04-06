@@ -21,9 +21,9 @@ const Feedback = ({ good, neutral, bad }) => {
 
 //Statistics component
 const Statistics = ({ good, neutral, bad }) => {
-  const total = good + neutral + bad
+  const all = good + neutral + bad
 
-  if (total === 0) {
+  if (all === 0) {
     return (
       <div>
         <h1>Statistics</h1>
@@ -32,18 +32,26 @@ const Statistics = ({ good, neutral, bad }) => {
     )
   }
 
-  const average = good > 0 || bad > 0 ? (good - bad) / total : 0
-  const percentage = good > 0 ? good / total * 100 : 0
+  const average = good > 0 || bad > 0 ? (good - bad) / all : 0
+  const percentage = good > 0 ? good / all * 100 + " %" : 0 + " %"
 
   return (
     <div>
       <h1>Statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {total}</p>
-      <p>average {average}</p>
-      <p>percentage {percentage}%</p>
+      <StatisticLine text="good" value={good}/>
+      <StatisticLine text="neutral" value={neutral}/>
+      <StatisticLine text="bad" value={bad}/>
+      <StatisticLine text="all" value={all}/>
+      <StatisticLine text="average" value={average}/>
+      <StatisticLine text="percentage" value={percentage}/>
+    </div>
+  )
+}
+
+const StatisticLine = ({ text, value }) => {
+  return (
+    <div>
+      <p>{text} {value}</p>
     </div>
   )
 }
@@ -55,6 +63,7 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  // event handler functions
   const handleGoodClick = () => {
     setGood(good + 1)
   }
@@ -68,10 +77,10 @@ const App = () => {
   }
 
   return (
-    <div>
+    <>
       <Feedback good={handleGoodClick} neutral={handleNeutralClick} bad={handleBadClick}/>
       <Statistics good={good} neutral={neutral} bad={bad}/>
-    </div>
+    </>
   )
 }
 
