@@ -11,10 +11,18 @@ const Button = ({ handleClick, text }) => (
 const Feedback = ({ good, neutral, bad }) => {
   return (
     <div>
-      <h1>Give Feedback</h1>
       <Button handleClick={good} text='good' />
       <Button handleClick={neutral} text='neutral' />
       <Button handleClick={bad} text='bad' />
+    </div>
+  )
+}
+
+//Header component
+const Header = ({ title }) => {
+  return (
+    <div>
+      <h1>{title}</h1>
     </div>
   )
 }
@@ -26,33 +34,33 @@ const Statistics = ({ good, neutral, bad }) => {
   if (all === 0) {
     return (
       <div>
-        <h1>Statistics</h1>
         No feedback given
       </div>
     )
   }
 
   const average = good > 0 || bad > 0 ? (good - bad) / all : 0
-  const percentage = good > 0 ? good / all * 100 + " %" : 0 + " %"
+  const positive = good > 0 ? good / all * 100 + " %" : 0 + " %"
 
   return (
     <div>
-      <h1>Statistics</h1>
-      <StatisticLine text="good" value={good}/>
-      <StatisticLine text="neutral" value={neutral}/>
-      <StatisticLine text="bad" value={bad}/>
-      <StatisticLine text="all" value={all}/>
-      <StatisticLine text="average" value={average}/>
-      <StatisticLine text="percentage" value={percentage}/>
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={good}/>
+          <StatisticLine text="neutral" value={neutral}/>
+          <StatisticLine text="bad" value={bad}/>
+          <StatisticLine text="all" value={all}/>
+          <StatisticLine text="average" value={average}/>
+          <StatisticLine text="positive" value={positive}/>
+        </tbody>
+      </table>
     </div>
   )
 }
 
 const StatisticLine = ({ text, value }) => {
   return (
-    <div>
-      <p>{text} {value}</p>
-    </div>
+      <tr><td>{text}</td><td>{value}</td></tr>
   )
 }
 
@@ -78,7 +86,9 @@ const App = () => {
 
   return (
     <>
+      <Header title="Give Feedback"/>
       <Feedback good={handleGoodClick} neutral={handleNeutralClick} bad={handleBadClick}/>
+      <Header title="Statistics"/>
       <Statistics good={good} neutral={neutral} bad={bad}/>
     </>
   )
