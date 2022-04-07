@@ -15,11 +15,7 @@ const Part = ({ part }) => {
 }
 
 const Content = ({ parts }) => {
-  var partComponents = []
-
-  parts.forEach((part, index)=>{
-    partComponents.push(<Part key={index} part={{name: part.name, exercise: part.exercises}}/>)
-  })
+  const partComponents = parts.map(part => <Part part={{name: part.name, exercise: part.exercises}}/>)
 
   return (
     <div>
