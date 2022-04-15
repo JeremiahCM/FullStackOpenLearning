@@ -14,13 +14,38 @@ const App = () => {
   ]) 
   const [newName, setNewName] = useState('')
 
+  const checkObjectsEqual = (first, second) => {
+    const fp = Object.getOwnPropertyNames(first)
+    const sp = Object.getOwnPropertyNames(second)
+
+    //Check if both key lists are not the same length, meaning objects not equal
+    if (fp.length !== sp.length) return false
+
+    //Check if all keys from both objects don't match somewhere
+    const hasAllKeys = fp.every(value => !!sp.find(v => v === value))
+
+    //If keys do not match, objects are not equal.
+    if (!hasAllKeys) return false
+
+    for (const key of fp) {
+      if (first[key] !== second[key]) return false
+    }
+
+    return true
+  }
+
   const addName = (event) => {
     event.preventDefault()
-    const personObject = {
+    const newPersonObject = {
       name: newName,
     }
 
-    setPersons(persons.concat(personObject))
+    if (persons.filter(person => checkObjectsEqual(person, newPersonObject)).length > 0) {
+      window.alert(`${newName} is already added to phonebook`)
+      return false
+    }
+
+    setPersons(persons.concat(newPersonObject))
     setNewName('')
   }
 
