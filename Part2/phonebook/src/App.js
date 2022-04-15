@@ -1,5 +1,15 @@
 import { useState } from 'react'
 
+//Filter component
+const Filter = ({ nameFilter, handleFilterChange }) => {
+  return (
+    <div>
+      filter shown with <input value={nameFilter} onChange={handleFilterChange}/>
+    </div>
+  )
+}
+
+//Person component
 const Person = ({ id, name, number }) => {
   return (
     <div>
@@ -8,6 +18,39 @@ const Person = ({ id, name, number }) => {
   )
 }
 
+//Persons component
+const Persons = ({ people }) => {
+  return (
+    <div>
+      <ul>
+        {people.map(person =>
+          <Person key={person.name} id={person.id} name={person.name} number={person.number}/>
+        )}
+      </ul>
+    </div>
+  )
+}
+
+//Persons Form component
+const PersonForm = (props) => {
+  return (
+    <div>
+      <form onSubmit={props.addPerson}>
+        <div>
+          name: <input value={props.newName} onChange={props.handleNameChange}/>
+        </div>
+        <div>
+          number: <input value={props.newNumber} onChange={props.handleNumberChange}/>
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+//App component
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -22,27 +65,8 @@ const App = () => {
 
   const personsToShow = showAll ? persons : persons.filter(person => person.name.toLowerCase().match(nameFilter.toLowerCase()))
 
-  const checkObjectsEqual = (first, second) => {
-    const fp = Object.getOwnPropertyNames(first)
-    const sp = Object.getOwnPropertyNames(second)
-
-    //Check if both key lists are not the same length, meaning objects not equal
-    if (fp.length !== sp.length) return false
-
-    //Check if all keys from both objects don't match somewhere
-    const hasAllKeys = fp.every(value => !!sp.find(v => v === value))
-
-    //If keys do not match, objects are not equal.
-    if (!hasAllKeys) return false
-
-    for (const key of fp) {
-      if (first[key] !== second[key]) return false
-    }
-
-    return true
-  }
-
-  const addName = (event) => {
+  //Add person to phonebook
+  const addPerson = (event) => {
     event.preventDefault()
     const newPersonObject = {
       name: newName,
@@ -50,7 +74,8 @@ const App = () => {
       id: persons.length + 1
     }
 
-    if (persons.filter(person => checkObjectsEqual(person, newPersonObject)).length > 0) {
+    //Stop and alert user if they are adding a duplicate person
+    if (persons.filter(person => person.name === newName).length > 0) {
       window.alert(`${newName} is already added to phonebook`)
       return false
     }
@@ -60,16 +85,19 @@ const App = () => {
     setNewNumber('')
   }
 
+  //Name event handler
   const handleNameChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
   }
 
+  //Number event handler
   const handleNumberChange = (event) => {
     console.log(event.target.value)
     setNewNumber(event.target.value)
   }
 
+  //Filter event handler
   const handleFilterChange = (event) => {
     console.log(event.target.value)
     setNameFilter(event.target.value)
@@ -78,30 +106,25 @@ const App = () => {
   }
 
   return (
-    <div>
+    <>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input value={nameFilter} onChange={handleFilterChange}/>
-      </div>
+
+      <Filter filter={nameFilter} onChange={handleFilterChange}/>
+
       <h2>Add New Person</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+
+      <PersonForm 
+        addPerson={addPerson}
+        newName={newName}
+        newNumber={newNumber}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+      />
+
       <h2>Numbers</h2>
-      <ul>
-        {personsToShow.map(person =>
-          <Person key={person.name} id={person.id} name={person.name} number={person.number}/>
-        )}
-      </ul>
-    </div>
+      
+      <Persons people={personsToShow}/>
+    </>
   )
 }
 
