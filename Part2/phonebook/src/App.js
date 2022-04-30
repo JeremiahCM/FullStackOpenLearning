@@ -114,7 +114,7 @@ const App = () => {
     <>
       <h2>Phonebook</h2>
 
-      <Filter filter={nameFilter} onChange={handleFilterChange}/>
+      <Filter nameFilter={nameFilter} handleFilterChange={handleFilterChange}/>
 
       <h2>Add New Person</h2>
 
