@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Country from './Country'
 
+//Component for listing out countries
 const Countries = ({ countries }) => {
     const [showDetailed, setShowDetailed] = useState('')
 
